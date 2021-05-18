@@ -1,0 +1,12 @@
+.container{
+    overflow-x: scroll;
+}
+.container::-webkit-scrollbar{
+    display: none;
+}
+.contain{
+    overflow-y: scroll;
+}
+.contain::-webkit-scrollbar{
+    display: none;
+}

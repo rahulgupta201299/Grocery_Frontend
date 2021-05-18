@@ -1,0 +1,65 @@
+.cartButton{
+    animation: pulse 0.5s ease-in-out;
+    animation-fill-mode: forwards;
+}
+.cart{
+    background-color: rgb(215, 242, 250);
+    right: 0;
+    animation-iteration-count: 1;
+    animation: pulse 0.5s ease-in-out;
+    animation-fill-mode: forwards;
+}
+@keyframes pulse{
+    0%{
+        width: 0%;
+    }
+    100%{
+        width: 30%;
+    }
+}
+@media only screen and (min-width: 900px) and (max-width:1100px){
+    @keyframes pulse{
+        0%{
+            width: 0%;
+        }
+        100%{
+            width: 40%;
+        }
+    }
+}
+@media only screen and (min-width: 700px) and (max-width:900px){
+    @keyframes pulse{
+        0%{
+            width: 0%;
+        }
+        100%{
+            width: 50%;
+        }
+    }
+}
+@media only screen and (min-width: 500px) and (max-width:700px){
+    @keyframes pulse{
+        0%{
+            width: 0%;
+        }
+        100%{
+            width: 65%;
+        }
+    }
+}
+@media only screen and (max-width: 500px){
+    @keyframes pulse{
+        0%{
+            width: 0%;
+        }
+        100%{
+            width: 100%;
+        }
+    }
+}
+.scrolling{
+    overflow-y: scroll;
+}
+.scrolling::-webkit-scrollbar{
+    display: none;
+}
