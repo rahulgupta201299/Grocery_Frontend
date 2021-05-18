@@ -85,11 +85,11 @@ function Category1({history}) {
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
-            <div className={`flex fixed py-2 bg-white z-40 mt-16 ${width>=400?'space-x-10':'space-x-6'} sm:space-x-16 container px-5 w-screen`}>
+            <div className={`flex fixed py-2 bg-white z-40 mt-16 ${width>=400?'space-x-10':'space-x-6'} sm:space-x-16 container px-5 w-full`}>
                 {
                     subCat.map((card,i)=>(
                         <div key={i}>
-                            <button onClick={()=>{history.push(`/category/${id}/${card}`)}} className="border border-red-300 p-1 px-4 sm:p-2 sm:px-4 rounded-full focus:outline-none font-semibold hover:bg-red-400 hover:text-white" >{card}</button>
+                            <button onClick={()=>{history.push(`/category/${id}/${card}`)}} className="border border-red-300 p-1 px-4 text-sm sm:text-md sm:p-2 sm:px-4 rounded-full focus:outline-none font-semibold hover:bg-red-400 hover:text-white" >{card.replace(/\s/g, "_")}</button>
                         </div>
                     ))
                 }

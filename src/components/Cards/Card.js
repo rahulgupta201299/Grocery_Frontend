@@ -91,7 +91,7 @@ function Card({discount,image,price,name,unit,dispatch,currentCart,currentCartIt
             <div className="items-center p-3"><img loading="lazy" className="mx-auto bg-cover object-cover cursor-pointer bg-white transition duration-150 transform hover:scale-110" src={image} height="100" width="100" /></div>
             <p className="p-2 text-gray-600 cursor-pointer">{name}</p>
             <p className="px-2 py-1 text-gray-400">{unit}</p>
-            <div className="flex justify-between p-2">
+            <div className="flex mt-auto justify-between p-2">
                 <div className="flex flex-col justify-between">
                     <p>₹{parseInt(price*(1-(discount/100)))}</p><del>₹{price}</del>
                 </div>

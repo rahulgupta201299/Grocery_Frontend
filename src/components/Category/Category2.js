@@ -70,16 +70,16 @@ function Category2({history}) {
                     {
                         category.map((card,i)=>(
                             width>1200?(i<5?(<div key={i} className="cursor-pointer p-3 hover:bg-blue-50" onClick={()=>history.push(`/category/${card.category}`)}>{card.category}</div>):null):
-                            (width>=1000?(i<4?(<div key={i} className="cursor-pointer p-3 hover:bg-blue-50" onClick={()=>history.push(`/category/${card.category}`)}>{card.category}</div>):null):(i<3?(<div key={i} className="cursor-pointer p-3 hover:bg-blue-50" onClick={()=>history.push(`/category/${card.category}`)}>{card.category}</div>):null))
+                            (width>=1000?(i<3?(<div key={i} className="cursor-pointer p-3 hover:bg-blue-50" onClick={()=>history.push(`/category/${card.category}`)}>{card.category}</div>):null):(i<2?(<div key={i} className="cursor-pointer p-3 hover:bg-blue-50" onClick={()=>history.push(`/category/${card.category}`)}>{card.category}</div>):null))
                             
                         ))
                     }
-                    <select id="More" name="More" className="bg-green-300 text-black focus:outline-none cursor-pointer hover:bg-blue-50 w-20">
-                    <option value="More">More</option>
+                    <select name="More" className="bg-green-300 text-black focus:outline-none cursor-pointer hover:bg-blue-50 w-20" onChange={event =>history.push(`/category/${event.target.value}`)}>
+                    <option disabled selected hidden>More</option>
                     {
                         category.map((card,i)=>(
                             width>1200?(i>=5?(<option value={card.category}>{card.category}</option>):null):
-                            (width>=1000?(i>=4?(<option value={card.category}>{card.category}</option>):null):(i>=3?(<option value={card.category}>{card.category}</option>):null))
+                            (width>=1000?(i>=3?(<option value={card.category}>{card.category}</option>):null):(i>=2?(<option value={card.category}>{card.category}</option>):null))
                         ))
                     }
                     </select>
