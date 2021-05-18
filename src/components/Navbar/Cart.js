@@ -103,7 +103,7 @@ function Cart({currentClick,dispatch,currentCart,history}) {
     const handleKnowMore=()=>{
         let x=FreeDelivery-DiscountedPrice
         swal({
-            icon: 'warning',
+            icon: FreeDelivery>DiscountedPrice?'warning':'success',
             title: 'Delivery Charges',
             text: FreeDelivery>DiscountedPrice?`Depends Upon the Location of Delivery. The best you can do is Shop for more ₹${x} amount to get free delivery!`: `Hurrah! No delivery charges as you shopped for more than or equal to ₹${FreeDelivery}`
         })
