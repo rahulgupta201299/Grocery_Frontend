@@ -37,6 +37,7 @@ function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
         window.addEventListener('resize', updateWindowDimensions);
     },[])
     const Logout=()=>{
+        setClick(true)
         Swal.fire({
             icon: 'warning',
             title: 'Are you sure?',
@@ -54,20 +55,6 @@ function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
               })
             }
           })
-        /*swal({
-            icon: 'warning',
-            title: 'Do you want to logout!',
-            button: 'Sign Out',
-            showCancelButton: true
-        }).then(res=>{
-            if(res){
-                Swal.fire({
-                    icon: 'success',
-                    title: 'You are successfully logged out!',
-                })
-                dispatch(setUser(null))
-            }
-        })*/
     }
     return (
         <div className="pb-16 top-0">
@@ -139,14 +126,14 @@ function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
                         <div style={{zIndex: '80'}} className="items-center fixed w-full mt-16 flex flex-col space-y-8 bg-gray-200">
                             {
                                 nav.map((card,i)=>(
-                                    <Link key={i} to={`/${card.link}`} className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110">{card.name}</Link>
+                                    <Link key={i} to={`/${card.link}`} className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110" onClick={()=>setClick(true)}>{card.name}</Link>
                                 ))
                             }
                             {
                                 currentUser&&currentUser.login?(
                                     <button className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110" onClick={Logout}>Sign Out</button>
                                 ):(
-                                    <button className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110" onClick={()=>history.push('/user/login')}>Login</button>
+                                    <button className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110" onClick={()=>history.push('/user/login')} onClick={()=>setClick(true)}>Login</button>
                                 )
                             }
                         </div>
