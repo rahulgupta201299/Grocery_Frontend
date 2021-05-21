@@ -1,12 +1,18 @@
 import React,{useState,useEffect} from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import {MenuIcon, SearchIcon} from '@heroicons/react/solid'
+import Swal from 'sweetalert2'
+import swal from 'sweetalert';
 import {connect} from 'react-redux'
+import {setUser} from '../redux/user/user-action'
 import Cart from './Cart'
+import OtpInput from 'react-otp-input'
 import {setCartClick} from '../redux/click/click-action'
-function Navbar({history,currentCart,dispatch,currentClick}) {
+function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
     const [small,setSmall]=useState(false)
     const [click,setClick]=useState(true)
+    const [otp,setOTP]=useState('')
+    const [phone,setPhone]=useState('')
     const updateWindowDimensions = () => {
         const newWidth = window.innerWidth;
         if(newWidth<=640) setSmall(true);
@@ -21,9 +27,6 @@ function Navbar({history,currentCart,dispatch,currentClick}) {
     },{
         name: 'Profile',
         link: 'abcd',
-    },{
-        name: 'Profile',
-        link: 'abcd',
     }]
     useEffect(()=>{
         if(window.innerWidth<=640) setSmall(true);
@@ -33,6 +36,39 @@ function Navbar({history,currentCart,dispatch,currentClick}) {
         }
         window.addEventListener('resize', updateWindowDimensions);
     },[])
+    const Logout=()=>{
+        Swal.fire({
+            icon: 'warning',
+            title: 'Are you sure?',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sign Out'
+          }).then((result) => {
+            if (result.value) {
+              dispatch(setUser(null))
+              Swal.fire({
+                icon: 'success',
+                title: 'Logged Out',
+                text:'You are successfully logged out',
+              })
+            }
+          })
+        /*swal({
+            icon: 'warning',
+            title: 'Do you want to logout!',
+            button: 'Sign Out',
+            showCancelButton: true
+        }).then(res=>{
+            if(res){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'You are successfully logged out!',
+                })
+                dispatch(setUser(null))
+            }
+        })*/
+    }
     return (
         <div className="pb-16 top-0">
         <div className="bg-gray-900 h-16 flex z-50 justify-between fixed items-center w-screen">
@@ -73,6 +109,14 @@ function Navbar({history,currentCart,dispatch,currentClick}) {
                                 <Link key={i} to={`/${card.link}`}>{card.name}</Link>
                             ))
                         }
+                        {
+                            currentUser&&currentUser.login?(
+                                <button className="bg-white text-black rounded-full px-3 mb-2 my-auto hover:bg-blue-500 transition duration-150 transform hover:scale-110 focus:outline-none" onClick={Logout}>Sign Out</button>
+                            ):(
+                                <button className="bg-green-400 rounded-full px-3 mb-2 my-auto hover:bg-green-300 transition duration-150 transform hover:scale-110 focus:outline-none" onClick={()=>history.push('/user/login')}>Login</button>
+                            )
+                        }
+
                         <div className="flex space-x-1">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 cursor-pointer transition duration-150 transform hover:scale-125" viewBox="0 0 20 20" fill="currentColor" onClick={()=>dispatch(setCartClick(true))}>
                              <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
@@ -98,6 +142,13 @@ function Navbar({history,currentCart,dispatch,currentClick}) {
                                     <Link key={i} to={`/${card.link}`} className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110">{card.name}</Link>
                                 ))
                             }
+                            {
+                                currentUser&&currentUser.login?(
+                                    <button className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110" onClick={Logout}>Sign Out</button>
+                                ):(
+                                    <button className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110" onClick={()=>history.push('/user/login')}>Login</button>
+                                )
+                            }
                         </div>
                 ):null
             }
@@ -106,6 +157,16 @@ function Navbar({history,currentCart,dispatch,currentClick}) {
 }
 const mapStateToProps=(state)=>({
     currentCart: state.cart.currentCart,
-    currentClick: state.click.currentClick
+    currentClick: state.click.currentClick,
+    currentUser: state.user.currentUser
 })
 export default withRouter(connect(mapStateToProps,null)(Navbar))
+
+/*
+
+<div className="flex flex-col space-y-4 mx-auto justify-items-center">
+                <h1 className="text-blue-400 font-bold text-2xl">Login with Mobile No.</h1>
+                <h1 className="text-gray-600 text-md font-semibold">Enter the number</h1>
+                <input onChange={(e)=>setPhone(e.target.value)} className="focus:outline-none rounded-full w-4/5 align-middle ring-2 ring-offset-gray-900 p-2 items-center py-2 mx-auto" type="phone"placeholder="Phone Number" />
+            </div>
+*/
