@@ -131,9 +131,9 @@ function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
                             }
                             {
                                 currentUser&&currentUser.login?(
-                                    <button className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110" onClick={Logout}>Sign Out</button>
+                                    <button className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110 focus:outline-none" onClick={Logout}>Sign Out</button>
                                 ):(
-                                    <button className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110" onClick={()=>history.push('/user/login')} onClick={()=>setClick(true)}>Login</button>
+                                    <button className="bg-blue-500 px-20 py-1 rounded-full text-lg mt-4 transition duration-150 transform hover:scale-110 focus:outline-none" onClick={()=>{history.push('/user/login');setClick(true);}}>Login</button>
                                 )
                             }
                         </div>
