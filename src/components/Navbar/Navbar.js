@@ -6,13 +6,13 @@ import swal from 'sweetalert';
 import {connect} from 'react-redux'
 import {setUser} from '../redux/user/user-action'
 import Cart from './Cart'
-import OtpInput from 'react-otp-input'
-import {setCartClick} from '../redux/click/click-action'
+import Axios from '../../Axios'
+import {setCartClick,SetSearch} from '../redux/click/click-action'
 function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
     const [small,setSmall]=useState(false)
     const [click,setClick]=useState(true)
-    const [otp,setOTP]=useState('')
-    const [phone,setPhone]=useState('')
+    const [search,setSearch]=useState('')
+    const [suggList,setSuggList]=useState([])
     const updateWindowDimensions = () => {
         const newWidth = window.innerWidth;
         if(newWidth<=640) setSmall(true);
@@ -56,13 +56,48 @@ function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
             }
           })
     }
+    const handleSuggestion=(e)=>{
+        setSearch(e.target.value)
+        Axios.get(`/search/suggestion?name=${search}`).then(res=>{
+            setSuggList(res.data)
+            console.log(res.data)
+        })
+    }
+    const handleSearch=(target)=>{
+        if(!search) return;
+        if(target.key !== 'Enter'){
+            return ;
+        }
+        Axios.get(`/search/suggestion?name=${search}`).then(res=>{
+            history.push('/category/search')
+            dispatch(SetSearch(res.data))
+            console.log(res.data)
+        })
+    }
+    const handleSearch2=(name)=>{
+        setSearch(name)
+        setSuggList([])
+        Axios.get(`/search/suggestion?name=${search}`).then(res=>{
+            history.push('/category/search')
+            dispatch(SetSearch(res.data))
+        })
+    }
     return (
         <div className="pb-16 top-0">
         <div className="bg-gray-900 h-16 flex z-50 justify-between fixed items-center w-screen">
             <div className="flex text-gray-50 m-4 cursor-pointer" onClick={()=>{history.push('/')}}>logo</div>
             <div className="flex flex-grow">
+                <div className="flex-col flex-grow">
                 <SearchIcon className="h-6 flex bg-white absolute m-2" />
-                <input className="flex-grow rounded-full h-10 focus:outline-none pl-10 p-2 w-4/5" type="search" placeholder="Search" />
+                <input className="flex-grow rounded-full h-10 focus:outline-none pl-10 p-2 w-full" type="search" placeholder="Search" value={search} onKeyPress={handleSearch} onChange={handleSuggestion}/>
+                <div className="flex-col mt-4 absolute w-1/2">
+                {
+                    suggList.map((card,i)=>(
+                        i<4?<p key={i} style={{zIndex:"90"}} className="bg-white rounded-lg p-2 px-4 cursor-pointer" onClick={()=>handleSearch2(card.name)}>{card.name}</p>:null
+                    ))
+                }
+                </div>
+                </div>
             </div>
             {
                 small?(
@@ -139,6 +174,7 @@ function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
                         </div>
                 ):null
             }
+            
         </div>
     )
 }

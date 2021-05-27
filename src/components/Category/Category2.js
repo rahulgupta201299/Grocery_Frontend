@@ -1,9 +1,11 @@
 import React,{useState,useEffect} from 'react'
 import Card from '../Cards/Card';
 import Axios from '../../Axios'
+import {connect} from 'react-redux'
+import {SetSearch} from '../redux/click/click-action'
 import './Category1.css'
 import { Link, useParams, withRouter } from 'react-router-dom';
-function Category2({history}) {
+function Category2({history,dispatch,currentSearch}) {
     const [width,setWidth]=useState(0)
     const {id,subCategory}=useParams()
     const [category,setCategory]=useState([])
@@ -13,7 +15,9 @@ function Category2({history}) {
     useEffect(()=>{
         async function fetchPosts(){
             const res=await Axios.get(`/products/${subCategory?subCategory:id}`)
-            setItem(res.data)
+            if(id!=="search"){
+                setItem(res.data)
+            }
             return res
         }
      fetchPosts()
@@ -38,6 +42,15 @@ function Category2({history}) {
         }
         fetchPosts()
     },[])
+
+    useEffect(()=>{
+        if(currentSearch){
+            setItem(currentSearch)
+            console.log("yes")
+            dispatch(SetSearch(null))
+        }
+    },[currentSearch])
+
     const updateWindowDimensions = () => {
         const newWidth = window.innerWidth;
         setWidth(newWidth)
@@ -98,7 +111,7 @@ function Category2({history}) {
                 <div className={`grid ${width<=950?'grid-cols-2':'grid-cols-3'} contain xl:grid-cols-4 mr-auto shadow-lg w-full`} >
                 {
                     item.map((card,i)=>(
-                        <Card key={i} discount={card.discount} name={card.name} image={card.image} unit={card.unit} price={card.price} />
+                        <Card key={i} discount={card.discount} name={card.name} image={card.image} unit={card.unit} price={card.price} category={category} subCategory={subCat} id={card._id} />
                     ))
                 }
             </div>
@@ -107,4 +120,8 @@ function Category2({history}) {
     )
 }
 
-export default withRouter(Category2)
+const mapStateToProps=state=>({
+    currentSearch: state.click.currentSearch
+})
+
+export default withRouter(connect(mapStateToProps,null)(Category2))

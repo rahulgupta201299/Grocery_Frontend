@@ -1,5 +1,7 @@
 const Initial_State={
-    currentUser: null
+    currentUser: null,
+    currentPhone: null,
+    currentAddress: null
 }
 
 const userReducer=(state=Initial_State,action)=>{
@@ -8,6 +10,16 @@ const userReducer=(state=Initial_State,action)=>{
             return{
                 ...state,
                 currentUser: action.payload
+            }
+        case 'SET_PHONE':
+            return {
+                ...state,
+                currentPhone: action.payload
+            }
+        case 'SET_DELIVERY_ADDRESS':
+            return {
+                ...state,
+                currentAddress: action.payload
             }
         default:
             return state

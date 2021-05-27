@@ -3,8 +3,10 @@ import { motion } from "framer-motion"
 import { Link, useParams, withRouter } from 'react-router-dom';
 import Axios from '../../Axios'
 import './Category1.css'
+import {connect} from 'react-redux'
+import {SetSearch} from '../redux/click/click-action'
 import Card from '../Cards/Card';
-function Category1({history}) {
+function Category1({history,currentSearch,dispatch}) {
     const [click,setClick]=useState(false)
     const [width,setWidth]=useState(0)
     const {id,subCategory}=useParams()
@@ -14,7 +16,9 @@ function Category1({history}) {
     useEffect(()=>{
         async function fetchPosts(){
             const res=await Axios.get(`/products/${subCategory?subCategory:id}`)
-            setItem(res.data)
+            if(id!=="search"){
+                setItem(res.data)
+            }
             return res
         }
      fetchPosts()
@@ -28,6 +32,14 @@ function Category1({history}) {
         }
         fetchPosts()
     },[id,subCategory])
+
+    useEffect(()=>{
+        if(currentSearch){
+            setItem(currentSearch)
+            console.log("yes")
+            dispatch(SetSearch(null))
+        }
+    },[currentSearch])
 
 // main page category list
 
@@ -108,7 +120,7 @@ function Category1({history}) {
             <div className={`absolute grid ${width>=670?'grid-cols-3':(width>=440?'grid-cols-2':'grid-cols-1')} w-screen mt-36 mr-auto shadow-lg`}>
                 {
                     item.map((card,i)=>(
-                        <Card key={i} discount={card.discount} name={card.name} image={card.image} unit={card.unit} price={card.price} />
+                        <Card key={i} discount={card.discount} name={card.name} image={card.image} unit={card.unit} price={card.price} category={category} subCategory={subCat} id={card._id} />
                     ))
                 }
             </div>
@@ -120,4 +132,8 @@ function Category1({history}) {
     )
 }
 
-export default withRouter(Category1)
+const mapStateToProps=(state)=>({
+    currentSearch: state.click.currentSearch
+})
+
+export default withRouter(connect(mapStateToProps,null)(Category1))

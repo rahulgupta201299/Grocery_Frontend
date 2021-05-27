@@ -1,5 +1,6 @@
 const Initial_State={
-    currentClick: false
+    currentClick: false,
+    currentSearch: null
 }
 
 const clickReducer=(state=Initial_State,action)=>{
@@ -8,6 +9,11 @@ const clickReducer=(state=Initial_State,action)=>{
             return{
                 ...state,
                 currentClick: action.payload
+            }
+        case 'SET_SEARCH':
+            return{
+                ...state,
+                currentSearch: action.payload
             }
         default:
             return state

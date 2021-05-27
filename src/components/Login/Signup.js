@@ -1,9 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import Axios from '../../Axios'
 import Swal from 'sweetalert2'
-import swal from '@sweetalert/with-react';
 import { GoogleLogin } from 'react-google-login';
-import PhoneLogin from './phoneLogin';
 import { Link, withRouter } from 'react-router-dom';
 import {setUser} from '../redux/user/user-action'
 import {connect} from 'react-redux'

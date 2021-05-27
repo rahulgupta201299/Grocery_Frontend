@@ -124,7 +124,7 @@ function Cart({currentClick,dispatch,currentCart,history}) {
                             </div>
                         </div>
                         {
-                            currentCart&&currentCart.length?<button style={{position: "fixed",bottom:"2px",right: "0",zIndex:"70"}} className="bg-red-400 cartButton w-1/2 rounded-xl p-3 mx-auto text-white transition duration-150 transform hover:scale-95 focus:outline-none hover:bg-red-300 font-bold">Proceed To Checkout</button>:
+                            currentCart&&currentCart.length?<button style={{position: "fixed",bottom:"2px",right: "0",zIndex:"70"}} className="bg-red-400 cartButton w-1/2 rounded-xl p-3 mx-auto text-white transition duration-150 transform hover:scale-95 focus:outline-none hover:bg-red-300 font-bold" onClick={()=>{history.push('/checkout');dispatch(setCartClick(false))}}>Proceed To Checkout</button>:
                             <button style={{position: "fixed",bottom:"2px",right: "0",zIndex:"70"}} className="bg-red-400 cartButton w-1/2 rounded-xl p-3 mx-auto text-white transition duration-150 transform hover:scale-95 focus:outline-none hover:bg-red-300 font-bold" onClick={()=>{history.push("/");dispatch(setCartClick(false))}}>Start Shopping</button>
                         }
                         {

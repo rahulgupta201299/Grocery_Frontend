@@ -1,8 +1,9 @@
 import React,{useState,useEffect} from 'react'
 import {connect} from 'react-redux'
+import { withRouter } from 'react-router'
 import {setCart,setCartItem} from '../redux/cart/cart-action'
-function Card({discount,image,price,name,unit,dispatch,currentCart,currentCartItem}) {
-    
+
+function Card({discount,image,price,name,unit,dispatch,currentCart,currentCartItem,history,id,category,subCategory}) {
     const handleIncButton=()=>{
         let arr=[]
         let array=[]
@@ -84,12 +85,14 @@ function Card({discount,image,price,name,unit,dispatch,currentCart,currentCartIt
         dispatch(setCart(arr))
         dispatch(setCartItem(array))
     }
-    
+    const handleItem=()=>{
+        history.push(`/products/${id}`)
+    }
     return (
         <div className="flex flex-col w-auto h-auto justify-items-start bg-white p-4 border-gray-400 shadow-lg border-2" style={{zIndex:'0'}}>
             <div style={{backgroundColor:'#7CFC00'}} className="mr-auto px-3 text-white">{discount}% off</div>
-            <div className="items-center p-3"><img loading="lazy" className="mx-auto bg-cover object-cover cursor-pointer bg-white transition duration-150 transform hover:scale-110" src={image} height="100" width="100" /></div>
-            <p className="p-2 text-gray-600 cursor-pointer">{name}</p>
+            <div className="items-center p-3"><img loading="lazy" className="mx-auto bg-cover object-cover cursor-pointer bg-white transition duration-150 transform hover:scale-110" src={image} height="100" width="100" onClick={handleItem} /></div>
+            <p className="p-2 text-gray-600 cursor-pointer" onClick={handleItem}>{name}</p>
             <p className="px-2 py-1 text-gray-400">{unit}</p>
             <div className="flex mt-auto justify-between p-2">
                 <div className="flex flex-col justify-between">
@@ -118,4 +121,4 @@ const mapStateToProps=(state)=>({
     currentCart: state.cart.currentCart,
     currentCartItem: state.cart.currentCartItem
 })
-export default connect(mapStateToProps, null)(Card)
+export default withRouter(connect(mapStateToProps, null)(Card))
