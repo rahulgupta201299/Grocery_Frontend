@@ -5,7 +5,7 @@ import {setCart,setCartItem} from '../redux/cart/cart-action'
 import './Cart.css'
 import swal from 'sweetalert'
 import { withRouter } from 'react-router'
-function Cart({currentClick,dispatch,currentCart,history}) {
+function Cart({currentClick,dispatch,currentCart,history,currentCartItem,currentUser}) {
     const FreeDelivery=800
     const DeliveryCharge=49
     const [width,setWidth]=useState(0)
@@ -108,6 +108,14 @@ function Cart({currentClick,dispatch,currentCart,history}) {
             text: FreeDelivery>DiscountedPrice?`Depends Upon the Location of Delivery. The best you can do is Shop for more ₹${x} amount to get free delivery!`: `Hurrah! No delivery charges as you shopped for more than or equal to ₹${FreeDelivery}`
         })
     }
+    const handleCheckout=()=>{
+        if(currentUser){
+            history.push('/checkout')
+            dispatch(setCartClick(false))
+        }else{
+            history.push('/user/login')
+        }
+    }
 
     return (
         <div>
@@ -124,7 +132,7 @@ function Cart({currentClick,dispatch,currentCart,history}) {
                             </div>
                         </div>
                         {
-                            currentCart&&currentCart.length?<button style={{position: "fixed",bottom:"2px",right: "0",zIndex:"70"}} className="bg-red-400 cartButton w-1/2 rounded-xl p-3 mx-auto text-white transition duration-150 transform hover:scale-95 focus:outline-none hover:bg-red-300 font-bold" onClick={()=>{history.push('/checkout');dispatch(setCartClick(false))}}>Proceed To Checkout</button>:
+                            currentCart&&currentCart.length?<button style={{position: "fixed",bottom:"2px",right: "0",zIndex:"70"}} className="bg-red-400 cartButton w-1/2 rounded-xl p-3 mx-auto text-white transition duration-150 transform hover:scale-95 focus:outline-none hover:bg-red-300 font-bold" onClick={handleCheckout}>Proceed To Checkout</button>:
                             <button style={{position: "fixed",bottom:"2px",right: "0",zIndex:"70"}} className="bg-red-400 cartButton w-1/2 rounded-xl p-3 mx-auto text-white transition duration-150 transform hover:scale-95 focus:outline-none hover:bg-red-300 font-bold" onClick={()=>{history.push("/");dispatch(setCartClick(false))}}>Start Shopping</button>
                         }
                         {
@@ -184,7 +192,9 @@ function Cart({currentClick,dispatch,currentCart,history}) {
 
 const mapStateToProps = state =>({
     currentCart: state.cart.currentCart,
-    currentClick: state.click.currentClick
+    currentClick: state.click.currentClick,
+    currentCartItem: state.cart.currentCartItem,
+    currentUser: state.user.currentUser
 })
 
 export default withRouter(connect(mapStateToProps,null)(Cart))
