@@ -82,14 +82,28 @@ function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
             dispatch(SetSearch(res.data))
         })
     }
+    const handleBlur=()=>{
+        const concernedElement = document.querySelector(".click-text");
+        document.addEventListener("mousedown", (event) => {
+        if(concernedElement){
+            if (concernedElement.contains(event.target)) {
+                ;
+            } else {
+                //console.log("Clicked Outside");
+                setSuggList([])
+            }
+        }
+        });
+    }
+    /**/
     return (
         <div className="pb-16 top-0">
         <div className="bg-gray-900 h-16 flex z-50 justify-between fixed items-center w-screen">
             <div className="flex text-gray-50 m-4 cursor-pointer" onClick={()=>{history.push('/')}}>logo</div>
-            <div className="flex flex-grow">
+            <div className="flex flex-grow click-text">
                 <div className="flex-col flex-grow">
-                <SearchIcon className="h-6 flex bg-white absolute m-2" />
-                <input className="flex-grow rounded-full h-10 focus:outline-none pl-10 p-2 w-full" type="search" placeholder="Search" value={search} onKeyPress={handleSearch} onChange={handleSuggestion}/>
+                <SearchIcon className="h-6 flex bg-white absolute m-2"/>
+                <input className="flex-grow rounded-full h-10 focus:outline-none pl-10 p-2 w-full" type="search" placeholder="Search" value={search} onBlur={handleBlur} onKeyPress={handleSearch} onChange={handleSuggestion} />
                 <div className="flex-col mt-4 absolute w-1/2">
                 {
                     suggList.map((card,i)=>(
