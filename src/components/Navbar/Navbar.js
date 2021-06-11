@@ -53,6 +53,7 @@ function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
                 title: 'Logged Out',
                 text:'You are successfully logged out',
               })
+              history.push('/user/login')
             }
           })
     }

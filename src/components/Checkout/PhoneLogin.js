@@ -6,8 +6,9 @@ import firebase from './Firebase'
 import {connect} from 'react-redux'
 import {SetPhone} from '../redux/user/user-action'
 import Axios from '../../Axios'
+import { withRouter } from 'react-router'
 //import OtpInput from 'react-otp-input'
-function PhoneLogin({dispatch,currentUser}) {
+function PhoneLogin({dispatch,history,currentUser}) {
     const [width,setWidth]=useState(0)
     const [click,setClick]=useState(false)
     const [phone,setPhone]=useState('')
@@ -39,6 +40,10 @@ function PhoneLogin({dispatch,currentUser}) {
         }
         if(phone.length!==10){
             setErr('Please Enter a valid mobile number')
+            return ;
+        }
+        if(!currentUser){
+            history.push("/user/login")
             return ;
         }
         setErr('')
@@ -136,7 +141,7 @@ const mapStateToProps =(state)=>({
     currentUser: state.user.currentUser
 })
 
-export default connect(mapStateToProps)(PhoneLogin)
+export default withRouter(connect(mapStateToProps)(PhoneLogin))
 
 /*
 Swal.fire({

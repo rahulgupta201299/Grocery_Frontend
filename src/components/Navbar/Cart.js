@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import {connect} from 'react-redux'
 import { setCartClick } from '../redux/click/click-action'
-import {setCart,setCartItem} from '../redux/cart/cart-action'
+import {setCart,setCartItem,setTotalAmount} from '../redux/cart/cart-action'
 import './Cart.css'
 import swal from 'sweetalert'
 import { withRouter } from 'react-router'
@@ -27,6 +27,7 @@ function Cart({currentClick,dispatch,currentCart,history,currentCartItem,current
                 y+=((currentCart[i].price*currentCart[i].discount)/100)*currentCart[i].quantity
                 z+=currentCart[i].price*currentCart[i].quantity
             }
+            dispatch(setTotalAmount(x))
             setDiscountedPrice(x)
             setTotalPrice(z)
             setTotalSaving(Math.round(y))

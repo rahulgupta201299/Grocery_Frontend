@@ -5,7 +5,8 @@ import Swal from 'sweetalert2'
 import Axios from '../../Axios'
 import {connect} from 'react-redux'
 import {SetDeliveryAddress} from '../redux/user/user-action'
-function DeliveryAddress({dispatch,currentAddress,currentUser}) {
+import { withRouter } from 'react-router'
+function DeliveryAddress({dispatch,history,currentAddress,currentUser}) {
     const [latitude,setLatitude]=useState('')
     const [longitude,setLongitude]=useState('')
     const [width,setWidth]=useState(0)
@@ -44,6 +45,10 @@ function DeliveryAddress({dispatch,currentAddress,currentUser}) {
         let isnum = /^\d+$/.test(Pin);
         if(!isnum){
             setErr('Enter a valid pincode!')
+            return ;
+        }
+        if(!currentUser){
+            history.push("/user/login")
             return ;
         }
         setErr('')
@@ -85,4 +90,4 @@ const mapStateToProps=(state)=>({
     currentUser: state.user.currentUser
 })
 
-export default connect(mapStateToProps,null)(DeliveryAddress)
+export default withRouter(connect(mapStateToProps,null)(DeliveryAddress))

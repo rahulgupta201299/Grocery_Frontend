@@ -52,6 +52,13 @@ function Login({dispatch,currentUser,history}) {
                 return ;
             }
             if(!res.data.verified){
+                dispatch(setUser({
+                    name:res.data.name,
+                    email:res.data.email,
+                    verified: res.data.verified,
+                    code: res.data.rand.toString(),
+                    login:false
+                }))
                 Swal.fire({
                     icon: 'warning',
                     title: 'please verify the email and login!'

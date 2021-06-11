@@ -5,9 +5,15 @@ import Swal from 'sweetalert2'
 import { SetPhone,SetDeliveryAddress } from '../redux/user/user-action'
 import DeliveryAddress from './DeliveryAddress'
 import Axios from '../../Axios'
-function Checkout({currentPhone,dispatch,currentAddress,currentUser}) {
+import Payment from './Payment'
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+function Checkout({currentPhone,dispatch,currentAddress,currentUser,currentTotalAmount}) {
+    const [value, setValue] = useState(new Date());
     const [phone,setPhone]=useState(false)
     const [address,setAddress]=useState(false)
+    const [clicked,setClicked]=useState(false)
+    const [showCalender,setShowCalender]=useState(false)
     useEffect(()=>{
         if(currentUser){
             Axios.get(`/user/address?name=${currentUser.email}`).then(res=>{
@@ -65,6 +71,11 @@ function Checkout({currentPhone,dispatch,currentAddress,currentUser}) {
                 dispatch(SetDeliveryAddress(null))
             }
         })
+    }
+    const handleDay=(date)=>{
+        setValue(date)
+        setShowCalender(false)
+        setClicked(true)
     }
     return (
         <div className="bg-white mx-auto w-full sm:w-4/5 lg:w-1/2 mt-10 rounded-lg p-2">
@@ -130,6 +141,60 @@ function Checkout({currentPhone,dispatch,currentAddress,currentUser}) {
                 !currentAddress&&address? <DeliveryAddress />:null
             }
             <hr className="mt-5 pb-5" />
+            {
+                clicked?(
+                    <div className="flex">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 my-auto flex-shrink-0 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                        <div className="flex flex-col">
+                            <div className="flex sm:space-x-4 space-x-1">
+                                <h1 className="font-bold pl-3 sm:pl-10 my-auto">{value.toString().split(" ")[1]} {value.toString().split(" ")[2]}, {value.toString().split(" ")[3]}  {value.toString().split(" ")[0]} (Delivery Date)</h1>
+                                <svg xmlns="http://www.w3.org/2000/svg" onClick={()=>{setClicked(false);setShowCalender(true)}} className="h-6 w-6 cursor-pointer text-blue-600 transition duration-150 transform hover:scale-125" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                ):(
+                    <div className="flex cursor-pointer" onClick={()=>setShowCalender(!showCalender)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-red-400 text-lg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                        </svg>
+                        <h1 className="font-bold pl-3 sm:pl-10 my-auto">Set Delivery Date</h1>
+                    </div>
+                )
+            }
+            {
+                showCalender?<Calendar
+                                className="mx-auto"
+                                onClickDay={handleDay}
+                                minDate={new Date()}
+                                value={value}
+                            />:null
+            }
+            <hr className="mt-5 pb-5" />
+            {
+                currentTotalAmount&&currentTotalAmount>0&&currentAddress&&currentPhone&&clicked?(
+                    <div className="flex-col justify-between space-y-2 px-4">
+                        <div className="flex justify-between">
+                            <p className="font-bold text-blue-500 text-lg">Total Amount</p>
+                            <p className="text-lg">₹ {currentTotalAmount}</p>
+                        </div>
+                        <div className="flex justify-between">
+                            <p className="text-sm text-gray-500">Delivery Charges</p>
+                            <p className="text-sm ">+ ₹ 49</p>
+                        </div>
+                        <hr className="border-1 border-black" />
+                        <div className="flex justify-between">
+                            <p className="text-lg text-blue-600 font-bold transition duration-150 transform sm:scale-110">Amount Payable</p>
+                            <p className="font-bold text-lg">₹ {currentTotalAmount+49}</p>
+                        </div>
+                    </div>
+                ):null
+            }
+            <Payment value={clicked} dod={value}/>
         </div>
     )
 }
@@ -137,7 +202,8 @@ function Checkout({currentPhone,dispatch,currentAddress,currentUser}) {
 const mapStateToProps=(state)=>({
     currentPhone: state.user.currentPhone,
     currentAddress: state.user.currentAddress,
-    currentUser: state.user.currentUser
+    currentUser: state.user.currentUser,
+    currentTotalAmount: state.cart.currentTotalAmount
 })
 
 export default connect(mapStateToProps,null)(Checkout)
