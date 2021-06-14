@@ -22,11 +22,11 @@ function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
         }
     };
     const nav=[{
-        name: 'Profile',
-        link: 'abcd',
+        name: 'About',
+        link: 'about',
     },{
-        name: 'Profile',
-        link: 'abcd',
+        name: 'MyAccount',
+        link: 'profile',
     }]
     useEffect(()=>{
         if(window.innerWidth<=640) setSmall(true);
@@ -148,7 +148,7 @@ function Navbar({history,currentCart,dispatch,currentClick,currentUser}) {
                         }
                         {
                             currentUser&&currentUser.login?(
-                                <button className="bg-white text-black rounded-full px-3 mb-2 my-auto hover:bg-blue-500 transition duration-150 transform hover:scale-110 focus:outline-none" onClick={Logout}>Sign Out</button>
+                                <button className="bg-white text-black rounded-full px-3 mb-2 my-auto hover:bg-blue-500 transition duration-150 transform hover:scale-110 focus:outline-none" onClick={Logout}>Sign<span className="text-white">_</span>Out</button>
                             ):(
                                 <button className="bg-green-400 rounded-full px-3 mb-2 my-auto hover:bg-green-300 transition duration-150 transform hover:scale-110 focus:outline-none" onClick={()=>history.push('/user/login')}>Login</button>
                             )

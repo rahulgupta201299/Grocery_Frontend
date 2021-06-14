@@ -9,6 +9,7 @@ import Signup from './components/Login/Signup';
 import Item from './components/Cards/Item';
 import Location from './components/GoogleMap/Location'
 import Checkout from './components/Checkout/Checkout';
+import Profile from './components/Profile/Profile';
 function App() {
   return (
     <div className="bg-gray-200">
@@ -23,6 +24,7 @@ function App() {
       <Route exact path="/products/:id" component={Item} />
       <Route exact path="/location" component={Location} />
       <Route exact path="/checkout" component={Checkout} />
+      <Route exact path="/profile" component={Profile} />
     </Switch>
     
     </div>
