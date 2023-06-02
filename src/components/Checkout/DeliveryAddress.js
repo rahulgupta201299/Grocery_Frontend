@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import '../Category/Category1.css'
-import geocoder from 'geocoder'
+// import geocoder from 'geocoder'
 import Swal from 'sweetalert2'
 import Axios from '../../Axios'
 import {connect} from 'react-redux'

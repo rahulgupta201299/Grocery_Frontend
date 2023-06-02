@@ -213,13 +213,13 @@ function Login({dispatch,currentUser,history}) {
                         
                         <hr />
                         <div className="mx-auto">
-                        <GoogleLogin
+                        {/* <GoogleLogin
                             clientId="177141942485-mbmruj6ns91r1e8eh02vnm05m3gonop8.apps.googleusercontent.com"
                             buttonText="Login with Google"
                             onSuccess={responseGoogle}
                             onFailure={responseGoogle}
                             cookiePolicy={'single_host_origin'}
-                        />
+                        /> */}
                         </div>
                         </div>
                     </div>
